@@ -15,26 +15,31 @@ export const theme: Theme = createTheme({
   palette: {
     secondary: { main: '#283047' },
     text: {
-      primary: '#283047',
-      secondary: '#525D7B',
+      primary: '#FFF',
+      secondary: '#757575',
     },
     background: {
-      paper: '#FFF',
-      default: '#EFF1F2',
+      paper: '#21212A',
+      default: '#17141D',
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: () => ({
+        body: {},
+      }),
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 24,
+          borderRadius: 12,
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 24,
+          borderRadius: 12,
           textTransform: 'none',
         },
       },
