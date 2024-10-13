@@ -1,31 +1,17 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { FileProps } from '../types';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Divider, IconButton, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { useFileMenu  } from '../lib/use-file-menu';
+//import { useAppDispatch } from '@/app/services/store';
+//import { showResourceContextMenu } from '@/app/services/slice';
 
-export const File: FC<FileProps> = ({ name, preview }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(null);
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+export const File: FC<FileProps> = ({ name, preview, resource_id }) => {
+  ///const dispatch = useAppDispatch();
+  const { showFileMenu, FileMenu } = useFileMenu({fileId: resource_id});
   return (
+    <>
     <Card
       sx={{
         position: 'relative',
@@ -49,22 +35,12 @@ export const File: FC<FileProps> = ({ name, preview }) => {
             borderRadius: '8px',
             width: '32px',
           }}
-          onClick={handleClick}
+          className="file-menu"
+          //onClick={() => dispatch(showResourceContextMenu(resource_id))}
+          onClick={(e) => showFileMenu({menuAnchor: e.currentTarget})}
         >
           <MoreVertIcon />
         </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <MenuItem onClick={handleClose}>Перенести</MenuItem>
-          <MenuItem onClick={handleClose}>Удалить</MenuItem>
-        </Menu>
       </Box>
 
       <Box sx={{ cursor: 'pointer', padding: '0.5rem' }}>
@@ -99,5 +75,7 @@ export const File: FC<FileProps> = ({ name, preview }) => {
         </Typography>
       </CardContent>
     </Card>
+    <FileMenu />
+    </>
   );
 };

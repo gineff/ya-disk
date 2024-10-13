@@ -1,22 +1,29 @@
 import { Menu, MenuItem } from '@mui/material';
+import { FileMenuProps } from '../types';
 
-export const FileMenu: React.FC<{
-  isOpen: boolean;
-  anchorEl: HTMLElement | null;
-  handleClose: () => void;
-}> = ({ isOpen, anchorEl, handleClose }) => {
+export const FileMenu: React.FC<FileMenuProps> = ({ menuAnchor, handleClose, fileId }) => {
+  const isOpen = Boolean(menuAnchor);
+
+  const handleRemoveFile = () => {
+    console.log(fileId);
+  };
+
+  const handleMoveFile = () => {
+    console.log(fileId);
+  };
+
   return (
     <Menu
       id="basic-menu"
-      anchorEl={anchorEl}
+      anchorEl={menuAnchor}
       open={isOpen}
       onClose={handleClose}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
       }}
     >
-      <MenuItem onClick={handleClose}>Перенести</MenuItem>
-      <MenuItem onClick={handleClose}>Удалить</MenuItem>
+      <MenuItem onClick={handleMoveFile}>Перенести</MenuItem>
+      <MenuItem onClick={handleRemoveFile}>Удалить</MenuItem>
     </Menu>
   );
 };
