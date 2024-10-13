@@ -1,45 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileMenu } from '../ui/file-menu';
+import { useAppDispatch, useAppSelector } from '@/app/services/store';
+import { showResourceContextMenu, hideResourceContextMenu } from '@/app/services/slice';
 
-export const useFileMenu = ({
-  containerRef,
-  className,
-}: {
-  containerRef: React.RefObject<HTMLDivElement>;
-  className: string;
-}) => {
+export const useFileMenu = ({ fileId }: { fileId: string }) => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const dispatch = useAppDispatch();
+  const resourceIdForContextMenu = useAppSelector(
+    (state) => state.app.resourceIdForContextMenu
+  );
 
-  const handleMenuClick = (fileItem: HTMLElement) => {
-    setMenuAnchor(fileItem);
-  };
+  useEffect(() => {
+    if (resourceIdForContextMenu !== fileId) {
+      setMenuAnchor(null);
+    }
+  }, [resourceIdForContextMenu, fileId]);
 
   const handleMenuClose = () => {
     setMenuAnchor(null);
+    dispatch(hideResourceContextMenu())
   };
 
-  useEffect(() => {
-    //menu привязывается к контейнеру, а не к каждому элементу отделено
-    const handleContainerClick = (event: MouseEvent) => {
-      event.stopPropagation();
-      const targetElement = event.target as HTMLElement;
-      const fileItem = targetElement.closest(`.${className}`) as HTMLElement;
-      //console.log(fileItem, targetElement);
-      if (fileItem) {
-        handleMenuClick(fileItem);
-      }
-    };
-
-    containerRef.current?.addEventListener('click', handleContainerClick);
-
-    return () => {
-      containerRef.current?.removeEventListener('click', handleContainerClick);
-    };
-  }, [containerRef]);
+  const showFileMenu = ({ menuAnchor }: { menuAnchor: HTMLElement | null }) => {
+    setMenuAnchor(menuAnchor);
+    dispatch(showResourceContextMenu(fileId))
+  };
 
   return {
     FileMenu: () => (
-      <FileMenu menuAnchor={menuAnchor} handleClose={handleMenuClose}/>
+      <FileMenu menuAnchor={menuAnchor} handleClose={handleMenuClose} fileId={fileId} />
     ),
+    showFileMenu,
   };
 };
