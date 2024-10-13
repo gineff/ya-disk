@@ -1,34 +1,48 @@
 import { useEffect, useState } from 'react';
 import { FileMenu } from '../ui/file-menu';
 import { useAppDispatch, useAppSelector } from '@/app/services/store';
-import { showResourceContextMenu, hideResourceContextMenu } from '@/app/services/slice';
+import { setActiveResource, showDialog } from '@/app/services/slice';
+import { Resource } from '@/entities/resources/types';
 
-export const useFileMenu = ({ fileId }: { fileId: string }) => {
+export const useFileMenu = (resource: Resource) => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const dispatch = useAppDispatch();
-  const resourceIdForContextMenu = useAppSelector(
-    (state) => state.app.resourceIdForContextMenu
-  );
+  const activeResource = useAppSelector((state) => state.app.activeResource);
 
   useEffect(() => {
-    if (resourceIdForContextMenu !== fileId) {
+    if (resource === activeResource) {
       setMenuAnchor(null);
     }
-  }, [resourceIdForContextMenu, fileId]);
+  }, [activeResource, resource]);
 
   const handleMenuClose = () => {
     setMenuAnchor(null);
-    dispatch(hideResourceContextMenu())
+    dispatch(setActiveResource(null));
   };
 
-  const showFileMenu = ({ menuAnchor }: { menuAnchor: HTMLElement | null }) => {
+  const showFileMenu = async ({ menuAnchor }: { menuAnchor: HTMLElement | null }) => {
+    await dispatch(setActiveResource(resource));
     setMenuAnchor(menuAnchor);
-    dispatch(showResourceContextMenu(fileId))
   };
+
+  const handleRemoveFile = () => {
+    dispatch(showDialog('deleteFile'));
+    setMenuAnchor(null);
+  };
+
+  const handleMoveFile = () => {
+    dispatch(showDialog('moveFile'));
+    setMenuAnchor(null);
+  };
+
+  const items = [
+    { label: 'Перенести', onClick: handleMoveFile },
+    { label: 'Удалить', onClick: handleRemoveFile },
+  ];
 
   return {
     FileMenu: () => (
-      <FileMenu menuAnchor={menuAnchor} handleClose={handleMenuClose} fileId={fileId} />
+      <FileMenu menuAnchor={menuAnchor} handleClose={handleMenuClose} items={items} />
     ),
     showFileMenu,
   };
