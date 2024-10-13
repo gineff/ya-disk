@@ -2,22 +2,23 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppState } from '../types';
 
 const initialState: AppState = {
-  resourceIdForContextMenu:  null,
+  activeResource: null,
+  activeDialog: null,
 };
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    showResourceContextMenu: (state, action) => {
-      state.resourceIdForContextMenu = action.payload || null;
+    setActiveResource: (state, action) => {
+      state.activeResource = action.payload || null;
     },
-    hideResourceContextMenu: (state) => {
-      state.resourceIdForContextMenu = null;
+    showDialog: (state, action) => {
+      state.activeDialog = action.payload || null;
     },
   },
 });
 
-export const { showResourceContextMenu, hideResourceContextMenu } = appSlice.actions;
+export const { setActiveResource, showDialog } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,4 +1,7 @@
+import { Resource } from "@/entities/resources/types";
+
 //Тип состояния приложения
 export type AppState = {
-  resourceIdForContextMenu: string | null;
+  activeResource: Resource | null;
+  activeDialog: 'deleteFile' | 'moveFile' | null;
 };
