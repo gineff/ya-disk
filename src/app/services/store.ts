@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { resourcesApi } from '@/entities/resources/api';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import appReducer from './slice';
 
 /** Redux store */
 
 export const store = configureStore({
   reducer: {
     [resourcesApi.reducerPath]: resourcesApi.reducer,
+    app: appReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(resourcesApi.middleware),
