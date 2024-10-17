@@ -58,3 +58,12 @@ export type ResourcesQueryArgs = {
   offset?: number;
   sort?: string;
 };
+
+export type DeleteResourceArgs = {
+  path: string; 
+}
+
+export type MoveResourceArgs = {
+  from: string; 
+  to: string;   
+}
