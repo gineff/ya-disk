@@ -7,7 +7,7 @@ export const AppRouter: FC = () => (
   <Routes>
     <Route element={<BaseLayout />}>
       <Route index element={<Navigate to="/disk" replace />} />
-      <Route path="/disk/:path?" element={<DiskPage />} />
+      <Route path="/disk/*" element={<DiskPage />} />
     </Route>
   </Routes>
 );

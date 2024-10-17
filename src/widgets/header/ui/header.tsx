@@ -5,7 +5,7 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import CameraIcon from '@mui/icons-material/Camera';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const Header = () => {
   return (
@@ -22,7 +22,7 @@ export const Header = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between',  }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CameraIcon sx={{ mr: 1 }} />
+            <DashboardIcon sx={{ mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
