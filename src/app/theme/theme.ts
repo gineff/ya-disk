@@ -22,6 +22,10 @@ export const theme: Theme = createTheme({
       paper: '#21212A',
       default: '#17141D',
     },
+    action: {
+      hover: 'rgba(255, 255, 255, 0.15)',
+      selected: 'rgba(255, 255, 255, 0.15)',
+    },
   },
   components: {
     MuiCssBaseline: {
@@ -41,6 +45,18 @@ export const theme: Theme = createTheme({
         root: {
           borderRadius: 12,
           textTransform: 'none',
+          '&.Mui-disabled': {
+            color: 'rgba(255, 255, 255, 0.15)',
+          },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '& .Mui-selected': {
+            backgroundColor: 'rgba(255, 255, 255, 0.15)',
+          },
         },
       },
     },

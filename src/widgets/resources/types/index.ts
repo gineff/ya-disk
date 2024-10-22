@@ -13,3 +13,8 @@ export type FileMenuProps = {
   handleClose: VoidFunction;
   items: MenuItem[];
 };
+
+export type FoldersListProps = {
+  initialPath?: string;
+  handleSelectFolder?: (path: string) => void;
+};

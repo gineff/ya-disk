@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { DeleteResourceArgs, MoveResourceArgs, Resource, ResourcesQueryArgs } from '../types';
 import { createSearchParams } from '../lib/createSearchParams';
+import { getResourceFolder } from '../lib/get-resource-folder';
 
 const token = import.meta.env.VITE_ACCESS_TOKEN;
 const basePath = import.meta.env.VITE_BASE_PATH;
@@ -24,17 +25,16 @@ export const resourcesApi = createApi({
           method: 'GET',
         };
       },
-      providesTags: (result) =>
-        result
-          ? [...result._embedded.items.map(({ path }) => ({ type: 'Resource' as const, id: path }))]
-          : [],
+      providesTags: (result) => (result ? [{ type: 'Resource' as const, id: result.path }] : []),
     }),
     deleteResource: builder.mutation<void, DeleteResourceArgs>({
       query: ({ path }) => ({
         url: `?path=${encodeURIComponent(path)}`,
         method: 'DELETE',
       }),
-      //invalidatesTags: (result, error, { path }) => [{ type: 'Resource', id: path }],
+      invalidatesTags: (result, error, { path }) => [
+        { type: 'Resource', id: getResourceFolder(<Resource>{ path }) },
+      ],
     }),
     moveResource: builder.mutation<void, MoveResourceArgs>({
       query: ({ from, to }) => {
@@ -46,15 +46,11 @@ export const resourcesApi = createApi({
         return {
           url: `/move?${params}`,
           method: 'POST',
-          body: {
-            from,
-            path: to,
-          },
         };
       },
       invalidatesTags: (result, error, { from, to }) => [
-        { type: 'Resource', id: from },
-        { type: 'Resource', id: to },
+        { type: 'Resource', id: getResourceFolder(<Resource>{ path: from }) },
+        { type: 'Resource', id: getResourceFolder(<Resource>{ path: to }) },
       ],
     }),
   }),

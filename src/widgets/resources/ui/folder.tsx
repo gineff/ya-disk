@@ -15,14 +15,19 @@ export const Folder: FC<FoldersProps> = ({ name, path }) => {
           border: '1px solid rgb(58 58 60 / 50%)',
           boxShadow: '0 4px 8px rgba(77, 77, 77, 0.1)',
           cursor: 'pointer',
-          height: '7rem',
         }}
       >
         <Box sx={{ fontSize: 0 }}>
           <Icon type="folder" />
         </Box>
         <CardContent
-          sx={{ padding: '0!important', height: '2.375rem', display: 'flex', alignItems: 'center' }}
+          sx={{
+            padding: '0!important',
+            marginLeft: '0.25rem',
+            height: '2.375rem',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
           <Typography
             gutterBottom
@@ -38,6 +43,7 @@ export const Folder: FC<FoldersProps> = ({ name, path }) => {
               textOverflow: 'ellipsis',
               wordWrap: 'break-word',
               wordBreak: 'break-word',
+              lineHeight: '0.75rem',
             }}
           >
             {name}

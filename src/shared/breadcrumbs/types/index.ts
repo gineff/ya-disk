@@ -8,5 +8,6 @@ export type Crumb = {
 
 export type BreadcrumbsProps = {
   crumbs?: Crumb[];
+  onCrumbClick?: (path: string) => void;
   sx?: SxProps<Theme>;
 };

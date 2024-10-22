@@ -1,19 +1,9 @@
-import { Breadcrumbs } from '@/shared/breadcrumbs/';
-import type { Crumb } from '@/shared/breadcrumbs/types';
+import { Breadcrumbs, createCrumbs } from '@/shared/breadcrumbs/';
 import { useGetPath } from '@/shared/hooks/use-get-path';
 
 export const BreadcrumbsWidget = () => {
   const path = useGetPath();
-
-  const crumbs: Crumb[] = [{ name: 'disk:', path: '/disk' }];
-  let accumulatedPath = '/disk';
-
-  path?.split('/').forEach((route) => {
-    if (route) {
-      accumulatedPath += `/${route}`;
-      crumbs.push({ name: route, path: accumulatedPath });
-    }
-  });
+  const crumbs = [{ name: 'disk:', path: '/disk' }, ...createCrumbs(path.slice(1))];
 
   return <Breadcrumbs crumbs={crumbs} />;
 };

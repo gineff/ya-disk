@@ -1,5 +1,4 @@
 import { Fragment } from 'react';
-import { SerializedError } from '@reduxjs/toolkit';
 import { useGetResources } from '../lib/use-get-resources';
 import { Loader } from '@/shared/loader';
 import { Stack, Box, Divider, Modal } from '@mui/material';
@@ -11,7 +10,7 @@ import { MoveFileDialog } from './move-file-dialog';
 export const ResourcesList = () => {
   const needDivider = checkNeedDivider();
   const { data, error, isLoading, isFetching } = useGetResources();
-  const errorMessage = (error as SerializedError)?.message || 'An error occurred';
+  const errorMessage = (error as ApiError)?.data.message || 'An error occurred';
 
   if (error) {
     return <div>Error: {errorMessage}</div>;
@@ -43,7 +42,9 @@ export const ResourcesList = () => {
       <DeleteFileDialog />
       <MoveFileDialog />
       <Modal open={isFetching}>
-        <Loader />
+        <Box>
+          <Loader />
+        </Box>
       </Modal>
     </>
   );
