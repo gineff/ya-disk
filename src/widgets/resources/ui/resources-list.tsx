@@ -4,8 +4,7 @@ import { Loader } from '@/shared/loader';
 import { Stack, Box, Divider, Modal } from '@mui/material';
 import { Resource } from './resource';
 import { checkNeedDivider } from '../lib/check-need-divider';
-import { DeleteFileDialog } from './delete-file-dialog';
-import { MoveFileDialog } from './move-file-dialog';
+import { ResourceDialog } from './resource-dialog';
 
 export const ResourcesList = () => {
   const needDivider = checkNeedDivider();
@@ -39,8 +38,7 @@ export const ResourcesList = () => {
           </Fragment>
         ))}
       </Stack>
-      <DeleteFileDialog />
-      <MoveFileDialog />
+      <ResourceDialog />
       <Modal open={isFetching}>
         <Box>
           <Loader />

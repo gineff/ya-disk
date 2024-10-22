@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -8,23 +8,17 @@ import {
   Button,
   Alert,
 } from '@mui/material';
-import { showDialog } from '@/app/services/slice';
-import { useAppDispatch, useAppSelector } from '@/app/services/store';
+
 import { Loader } from '@/shared/loader';
 import { useMoveResourceMutation } from '@/entities/resources/api';
 import { FoldersList } from './folders-list';
 import { getResourceFolder } from '@/entities/resources';
 import { combinePaths } from '@/shared/lib/combine-paths';
-//import { useGetQueryParams } from '../lib/use-get-query-params';
+import { MoveFileDialogProps } from '../types';
 
-export const MoveFileDialog = () => {
-  //const queryParams = useGetQueryParams();
-  const { activeDialog, activeResource } = useAppSelector((state) => state.app);
-  const [destinationPath, setDestinationPath] = useState('disk:/');
-  const dispatch = useAppDispatch();
-  const isOpen = activeDialog === 'moveFile';
+export const MoveFileDialog: FC<MoveFileDialogProps> = ({ resource, isOpen, handleClose }) => {
+  const [destinationPath, setDestinationPath] = useState(getResourceFolder(resource));
   const [moveResource, { isLoading, isSuccess, isError, error }] = useMoveResourceMutation();
-  const errorMessage = (error as ApiError)?.data.message || 'Произошла ошибка при перемещении.';
 
   useEffect(() => {
     if (isSuccess) {
@@ -32,28 +26,12 @@ export const MoveFileDialog = () => {
     }
   }, [isSuccess]);
 
-  useEffect(() => {
-    if (activeResource) {
-      setDestinationPath(getResourceFolder(activeResource));
-    }
-  }, [activeResource]);
-
-  if (!activeResource) {
-    return null;
-  }
-
-  const isSamePath = getResourceFolder(activeResource) === destinationPath;
-
-  const handleClose = () => {
-    dispatch(showDialog(null));
-  };
-
-  //console.log(getResourceFolder(activeResource), destinationPath);
+  const isSamePath = getResourceFolder(resource) === destinationPath;
 
   const handleMoveFile = async () => {
     await moveResource({
-      from: activeResource.path,
-      to: combinePaths(destinationPath, activeResource.name),
+      from: resource.path,
+      to: combinePaths(destinationPath, resource.name),
     });
   };
 
@@ -70,12 +48,12 @@ export const MoveFileDialog = () => {
       <DialogTitle id="alert-dialog-title">{`Переместить файл ?`}</DialogTitle>
       <DialogContent>
         <DialogContentText sx={{ breakWord: 'break-all', whiteSpace: 'pre-line' }}>
-          {activeResource?.path}
+          {resource.path}
         </DialogContentText>
         {isLoading && <Loader />}
         {isError && (
           <Alert severity="error" sx={{ my: 2 }}>
-            {errorMessage}
+            {(error as ApiError)?.data.message || 'Произошла ошибка при перемещении.'}
           </Alert>
         )}
         <FoldersList

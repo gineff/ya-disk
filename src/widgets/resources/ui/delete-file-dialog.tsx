@@ -7,37 +7,16 @@ import {
   Button,
   Alert,
 } from '@mui/material';
-import { showDialog } from '@/app/services/slice';
-import { useAppDispatch, useAppSelector } from '@/app/services/store';
-import { useDeleteResourceMutation, resourcesApi } from '@/entities/resources/api';
+import { useDeleteResourceMutation } from '@/entities/resources/api';
 import { Loader } from '@/shared/loader';
-import { useEffect } from 'react';
-import { useGetQueryParams } from '../lib/use-get-query-params';
+import { FC, useEffect } from 'react';
+import { DeleteFileDialogProps } from '../types';
 
-export const DeleteFileDialog = () => {
-  const dispatch = useAppDispatch();
-  const { activeDialog, activeResource } = useAppSelector((state) => state.app);
-  const isOpen = activeDialog === 'deleteFile';
+export const DeleteFileDialog: FC<DeleteFileDialogProps> = ({ resource, isOpen, handleClose }) => {
   const [deleteResource, { isLoading, isSuccess, isError, error }] = useDeleteResourceMutation();
-  const errorMessage = (error as ApiError)?.data.message || 'Произошла ошибка при удалении файла.';
-  const queryParams = useGetQueryParams();
 
   const handleDeleteFile = async () => {
-    if (activeResource) {
-      await deleteResource({ path: activeResource.path });
-
-      dispatch(
-        resourcesApi.util.updateQueryData('getResource', queryParams, (draft) => {
-          draft._embedded.items = draft._embedded.items.filter(
-            (item) => item.path !== activeResource.path,
-          );
-        }),
-      );
-    }
-  };
-
-  const handleClose = () => {
-    dispatch(showDialog(null));
+    await deleteResource(resource);
   };
 
   useEffect(() => {
@@ -54,12 +33,12 @@ export const DeleteFileDialog = () => {
           id="alert-dialog-description"
           sx={{ breakWord: 'break-all', whiteSpace: 'pre-line' }}
         >
-          {activeResource?.name}
+          {resource?.name}
         </DialogContentText>
         {isLoading && <Loader />}
         {isError && (
           <Alert severity="error" sx={{ mt: 2 }}>
-            {errorMessage}
+            {(error as ApiError)?.data.message || 'Произошла ошибка при удалении файла.'}
           </Alert>
         )}
       </DialogContent>
