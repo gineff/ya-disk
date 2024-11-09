@@ -23,7 +23,7 @@ export type Resource = {
     gps_latitude: object;
   };
   custom_properties: object;
-  media_type: string;
+  media_type: 'image' | string;
   preview: string;
   type: 'dir' | 'file';
   mime_type: string;
@@ -60,10 +60,10 @@ export type ResourcesQueryArgs = {
 };
 
 export type DeleteResourceArgs = {
-  path: string; 
-}
+  path: string;
+};
 
 export type MoveResourceArgs = {
-  from: string; 
-  to: string;   
-}
+  from: string;
+  to: string;
+};

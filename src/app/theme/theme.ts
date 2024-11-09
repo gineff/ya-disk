@@ -51,6 +51,25 @@ export const theme: Theme = createTheme({
         },
       },
     },
+    MuiIcon: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: 'grey.500',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:disabled': {
+            opacity: 0.3,
+            color: 'grey.500',
+          },
+        },
+      },
+    },
     MuiListItemButton: {
       styleOverrides: {
         root: {

@@ -38,9 +38,16 @@ export const ResourcesList = () => {
           </Fragment>
         ))}
       </Stack>
-      <ResourceDialog />
+      <ResourceDialog resources={data} />
       <Modal open={isFetching}>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+          }}
+        >
           <Loader />
         </Box>
       </Modal>

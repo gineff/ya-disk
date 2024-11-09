@@ -16,9 +16,13 @@ export const appSlice = createSlice({
     showDialog: (state, action) => {
       state.activeDialog = action.payload || null;
     },
+    showFile: (state, action) => {
+      state.activeDialog = 'viewFile';
+      state.activeResource = action.payload || null;
+    },
   },
 });
 
-export const { setActiveResource, showDialog } = appSlice.actions;
+export const { setActiveResource, showDialog, showFile } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -19,14 +19,12 @@ export type FoldersListProps = {
   handleSelectFolder?: (path: string) => void;
 };
 
-export type DeleteFileDialogProps = {
-  resource: Resource;
+export type DialogProps<T> = {
+  resource: T;
   isOpen: boolean;
   handleClose: VoidFunction;
 };
 
-export type MoveFileDialogProps = {
-  resource: Resource;
-  isOpen: boolean;
-  handleClose: VoidFunction;
-};
+export type DeleteFileDialogProps = DialogProps<Resource>;
+export type MoveFileDialogProps = DialogProps<Resource>;
+export type ViewFileDialogProps = DialogProps<Resource> & {files: Resource[]};

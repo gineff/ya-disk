@@ -4,10 +4,18 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useFileMenu } from '../lib/use-file-menu';
 import { Resource } from '@/entities/resources/types';
+import { useAppDispatch } from '@/app/services/store';
+import { showFile } from '@/app/services/slice';
 
 export const File: FC<Resource> = (resource) => {
-  const { name, preview  } = resource;
+  const dispatch = useAppDispatch();
+  const { name, preview } = resource;
   const { showFileMenu, FileMenu } = useFileMenu(resource);
+
+  const handleShowFile = (resource: Resource) => {
+    dispatch(showFile(resource));
+  };
+  
   return (
     <>
       <Card
@@ -40,7 +48,7 @@ export const File: FC<Resource> = (resource) => {
           </IconButton>
         </Box>
 
-        <Box sx={{ cursor: 'pointer', padding: '0.5rem' }}>
+        <Box sx={{ cursor: 'pointer', padding: '0.5rem' }} onClick={() => handleShowFile(resource)}>
           {preview ? (
             <CardMedia sx={{ height: 120, borderRadius: '0.5rem 0.5rem 0 0' }} image={preview} />
           ) : (
