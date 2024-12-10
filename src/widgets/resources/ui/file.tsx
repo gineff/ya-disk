@@ -9,13 +9,15 @@ import { showFile } from '@/app/services/slice';
 
 export const File: FC<Resource> = (resource) => {
   const dispatch = useAppDispatch();
-  const { name, preview } = resource;
+  const { name, sizes } = resource;
   const { showFileMenu, FileMenu } = useFileMenu(resource);
 
   const handleShowFile = (resource: Resource) => {
     dispatch(showFile(resource));
   };
-  
+
+  const image = sizes && sizes[0]?.url;
+
   return (
     <>
       <Card
@@ -49,8 +51,8 @@ export const File: FC<Resource> = (resource) => {
         </Box>
 
         <Box sx={{ cursor: 'pointer', padding: '0.5rem' }} onClick={() => handleShowFile(resource)}>
-          {preview ? (
-            <CardMedia sx={{ height: 120, borderRadius: '0.5rem 0.5rem 0 0' }} image={preview} />
+          {image ? (
+            <CardMedia sx={{ height: 120, borderRadius: '0.5rem 0.5rem 0 0' }} image={image} />
           ) : (
             <IconButton sx={{ height: 120, width: '100%', color: 'grey.600' }}>
               <InsertDriveFileIcon sx={{ height: '100%', width: 'auto' }} />
