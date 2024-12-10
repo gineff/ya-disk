@@ -8,5 +8,5 @@ export const Resource: React.FC<ResourceType> = ({ type, ...rest }) => {
     return <Folder {...rest} />;
   }
 
-  return <File {...rest} />;
+  return <File type={'file'} {...rest} />;
 };

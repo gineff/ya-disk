@@ -32,7 +32,7 @@ export const resourcesApi = createApi({
         url: `?path=${encodeURIComponent(path)}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { path }) => [
+      invalidatesTags: (_result, _error, { path }) => [
         { type: 'Resource', id: getResourceFolder(<Resource>{ path }) },
       ],
     }),
@@ -48,7 +48,7 @@ export const resourcesApi = createApi({
           method: 'POST',
         };
       },
-      invalidatesTags: (result, error, { from, to }) => [
+      invalidatesTags: (_result, _error, { from, to }) => [
         { type: 'Resource', id: getResourceFolder(<Resource>{ path: from }) },
         { type: 'Resource', id: getResourceFolder(<Resource>{ path: to }) },
       ],
