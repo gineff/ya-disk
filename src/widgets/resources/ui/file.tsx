@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, Card, CardContent, CardMedia, Divider, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Divider, IconButton, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { useFileMenu } from '../lib/use-file-menu';
@@ -9,7 +9,7 @@ import { showFile } from '@/app/services/slice';
 
 export const File: FC<Resource> = (resource) => {
   const dispatch = useAppDispatch();
-  const { name, sizes } = resource;
+  const { name, sizes, media_type } = resource;
   const { showFileMenu, FileMenu } = useFileMenu(resource);
 
   const handleShowFile = (resource: Resource) => {
@@ -51,8 +51,17 @@ export const File: FC<Resource> = (resource) => {
         </Box>
 
         <Box sx={{ cursor: 'pointer', padding: '0.5rem' }} onClick={() => handleShowFile(resource)}>
-          {image ? (
-            <CardMedia sx={{ height: 120, borderRadius: '0.5rem 0.5rem 0 0' }} image={image} />
+          {image && media_type === 'image' ? (
+            <img
+              src={image}
+              alt={name}
+              style={{
+                height: 120,
+                width: 140,
+                objectFit: 'cover',
+                borderRadius: '0.5rem 0.5rem 0 0',
+              }}
+            />
           ) : (
             <IconButton sx={{ height: 120, width: '100%', color: 'grey.600' }}>
               <InsertDriveFileIcon sx={{ height: '100%', width: 'auto' }} />
