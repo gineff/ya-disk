@@ -9,4 +9,6 @@
 
 ## Демо  
 Вы можете посмотреть демо-версию приложения 
-[Demo vercel](ya-disk.vercel.app)  
+[Demo vercel](https://ya-disk.vercel.app/disk)   
+  
+![image](https://github.com/user-attachments/assets/e68b10f3-9545-4f03-83fc-775083ca66b0)
